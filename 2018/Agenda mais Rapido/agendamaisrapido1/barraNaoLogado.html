@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Barra</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/materialize.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+
+    <nav class=" blue darken-2" role="navigation">
+        <div class="nav-wrapper"><a id="logo-container" href="index.php">
+            <img src="img/logo1.png" title="Início" class="circle" style="width: 80px; height: 80px;"></a>
+            <ul class="right hide-on-med-and-down blue-text darken-2">
+                <li><a href="Quemsomos.php">
+                        Quem Somos</a></li>
+                <li><a class="modal-trigger entrar" href="#entrar"><i class="material-icons left">person</i>
+                        Entrar</a></li>
+                <li title="Cadastrar"><a href="#cadTodos" class="blue waves-effect waves-light btn-floating btn-large modal-trigger"><i
+                            class="large material-icons">account_box</i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="cadTodos" class="modal">
+        <div class="modal-content">
+            <div class="blue-text center">
+                <img src="img/agen.png" alt="Cadastrar assistente" width="50px" height="42px">
+                <h5>Clique no cadastro desejado</h5>
+            </div>
+            <div class="center">
+
+                <a href="cadpaciente.php" style="margin: 10px 0;" class="waves-effect waves-light btn blue">
+                    <img src="img/paciente.png" alt="Cadastrar Pacientes" width="30px" height="30px">
+                    Paciente
+                </a>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-blue btn-flat">Fechar</a>
+        </div>
+    </div>
+    <div id="entrar" class="modal modal-fixed-footer">
+        <div class="img-log modal-content">
+            <h4 class="blue-text darken-2 center"> <img src="img/med.png" alt="" width="40vw" height="40vh"> Entrar</h4>
+            <form action="verificarTodos.php" method="POST" id="formTodos">
+                <br>
+                <br>
+                <div class="input-field container">
+                    <input type="text" id="sus" name="usuario">
+
+                    <label for="sus">Usuário</label>
+                </div>
+                <br>
+                <div class="input-field container">
+                    <input type="password" id="senha" name="senha1">
+                    <label for="senha">Senha</label>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#cadTodos" class="modal-action white blue-text darken-2 left modal-close waves-effect waves-blue btn modal-trigger">Cadastre
+                -se</a>
+            <input type="submit" value="Entrar" class="btn blue white-text modal-action">
+            </form>
+        </div>
+    </div>
+
+    
+
+    <script src="js/jquery.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/sweetalert2.all.min.js"></script>
+    <script src="js/loginTudoO.js"></script>
+    <script src="js/cadpaciente.js"></script>
+    <script>
+        $(window).ready(function () {
+            $(".modal").modal();
+            $('.sidenav').sidenav();
+        })
+    </script>
+
+</body>
+
+</html>
