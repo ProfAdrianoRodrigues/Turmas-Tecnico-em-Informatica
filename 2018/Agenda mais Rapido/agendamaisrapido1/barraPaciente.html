@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Barra</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/materialize.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+    <ul id="btnSair" class="dropdown-content">
+
+        <li><a class="waves-effect waves-light  modal-trigger" id="editarpaciente" href="#modal1">Editar Dados</a>
+        </li>
+        <li><a href="index.php" onclick="sairPaciente()">Sair</a></li>
+
+    </ul>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="blue-text text-darken-2 center" h4>Editar Informações
+                </h4>
+            </div>
+            <form action="EditarPac.php" id="formEditPaciente" class="col s12">
+                <div class="row">
+                    <div class="col s8">
+                        <i class="material-icons prefix">email</i><label for="email1">E-mail</label>
+                        <input id="email1" type="text" name="email1" class="validate">
+
+                    </div>
+                    <div class="col s4">
+                        <i class="material-icons prefix">person_pin_circle</i><label for="cep1">CEP</label>
+                        <input id="cep1" type="text" name="cep1" class="validate">
+
+                    </div>
+                    <div class="col s8">
+                        <i class="material-icons prefix">edit_location</i>
+                        <label for="rua1">Rua</label>
+                        <input id="rua1" type="tel" name="rua1" class="validate">
+
+                    </div>
+
+                    <div class="col s4">
+                        <i class="material-icons prefix">location_on</i>
+                        <label for="bairro1">Bairro</label>
+                        <input id="bairro1" type="tel" name="bairro1" class="validate">
+
+                    </div>
+                    <div class="col s4">
+                        <i class="material-icons prefix">filter_2</i>
+                        <label for="numero1">Número</label>
+                        <input id="numero1" type="text" name="numero1" class="validate">
+                    </div>
+
+                    <div class="col s8">
+                        <i class="material-icons prefix">location_on</i><label for="cidade1">Cidade</label>
+                        <input id="cidade1" type="tel" name="cidade1" class="validate">
+
+                    </div>
+                    <div class="col s6">
+                        <i class="material-icons prefix">phone</i> <label for="celular1">Celular</label>
+                        <input id="celular1" type="tel" name="celular1" class="validate" name="celular1" onkeydown="maskara('celular')">
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#!" class=" modal-action modal-close btn waves-green left">Cancelar</a>
+                    <input value="Editar" type="submit" class="center btn blue pulse">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <nav class=" blue darken-2" role="navigation">
+        <div class="nav-wrapper"><a id="logo-container" href="index.php">
+                <img src="img/logo1.png" class="circle" style="width:80px; height: 80px;" title="Início"></a>
+
+            <ul class="right hide-on-med-and-down blue-text darken-2">
+
+                <li>
+                    <a href="marcarconsulta.php">Marcar Consulta
+                    </a>
+                </li>
+
+                <li><a href="Quemsomos.php">
+                        Quem Somos</a></li>
+                <li><a class="dropdown-trigger" data-target="" href="#btnSair"><img src="img/paciente.png" alt="Cadastrar Pacientes"
+                            width="45px" height="45px">Logado</a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <script src="js/jquery.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/MASKARAS.js"> </script>
+    <script src="js/jquery.cpfcnpj.js"></script>
+    <script src="js/sweetalert2.all.min.js"></script>
+    <script src="js/sair1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".modal").modal({
+                dismissible: false
+            });
+            $('.sidenav').sidenav();
+            $(".dropdown-trigger").dropdown({
+                hover: true,
+                alignment: "left",
+                coverTrigger: false,
+            });
+            $('.parallax').parallax();
+            $("#cep").mask("99999-999");
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#rua").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+            }
+
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function () {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if (validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#rua1").val("...");
+                        $("#bairro1").val("...");
+                        $("#cidade1").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#rua1").val(dados.logradouro);
+                                $("#bairro1").val(dados.bairro);
+                                $("#cidade1").val(dados.localidade);
+                                $("#UF").val(dados.uf);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
